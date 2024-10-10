@@ -1,13 +1,11 @@
 #include "mbed.h"
-
-DigitalIn button(PA_14);
-DigitalOut myled(LED1);
-
+Serial pc(USBTX, USBRX);
 int main(){
-    while(1){
-			if(!button){
-				myled =! myled;
-				while (!button) wait(0.3);
-			}
+	float input;
+	while(1){
+		pc.printf("minimum number = 3 and number of decimal place = 3\n\r");
+		pc.scanf("%f", &input);
+		pc.printf("floating point output = %3.3f\n\r", input);
 	}
-}
+}	
+		
