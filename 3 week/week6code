@@ -1,0 +1,13 @@
+#include "mbed.h"
+
+DigitalIn button(PA_14);
+DigitalOut myled(LED1);
+
+int main(){
+    while(1){
+		if(!button){
+			myled=! myled;
+			while (!button) wait(0.3);
+		}
+	}
+}
