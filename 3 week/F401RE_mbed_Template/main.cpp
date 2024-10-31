@@ -1,24 +1,25 @@
 #include "mbed.h"
 
-AnalogIn analog_value(A0);
-DigitalOut myled(LED1);
-#define operating_voltage 5
+DigitalOut trig(D10);
+DigitalIn echo(D7);
 
-float measured_voltage;
-float output_voltage;
+Timer timer;
+float elapsed_time;
+float distance;
+#define speed_of_light 342
 
 int main(){
+	timer.start();
 	while(1){
-		measured_voltage = analog_value.read();
-		output_voltage = measured_voltage*operating_voltage;
-		
-		if (output_voltage > 2) {
-			myled = 1;
-			printf("output voltage = %.3f \r\n", output_voltage);
-		} else {
-			myled = 0;
-			printf("output voltage = %.3f \r\n", output_voltage);
-		}
-		wait(0.5);
+		trig = 1;
+		wait(0.00005);
+		trig = 0;
+		while(!echo.read());
+		timer.reset();
+		while(echo.read());
+		elapsed_time = timer.read_us();
+		distance = speed_of_light * elapsed_time * 0.0001 / 2;
+		printf("Distance: %6.1f cm \r\n", distance);
+		wait(1);
 	}
 }
