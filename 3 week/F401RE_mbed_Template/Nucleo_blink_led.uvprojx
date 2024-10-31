@@ -594,16 +594,6 @@
                 </FileArmAds>
               </FileOption>
             </File>
-            <File>
-              <FileName>motordriver.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\motordriver.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Motordriver.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Motordriver.h</FilePath>
-            </File>
           </Files>
         </Group>
       </Groups>

@@ -1,23 +1,16 @@
 #include "mbed.h"
-#include "motordriver.h"
 
-Motor A(D11, PC_8); // pwm, dir
-Motor B(D12, PD_2); // pwm, dir
+AnalogIn analog_value(A0);
+#define operating_voltage 5
 
-int main() {
-    while (1) {
-        // For speed test.
-        for (float s= 0; s < 1.0f ; s += 0.1f) {
-			A.forward(s); 
-            wait(1);
-		}
+float measured_voltage;
+float output_voltage;
 
-		A.stop();
-        wait(3);
-
-        for (float s= 0; s < 1.0f ; s += 0.1f) {
-			A.backward(s);
-            wait(1);
-       }
-    }
+int main(){
+	while(1){
+		measured_voltage = analog_value.read();
+		output_voltage = measured_voltage*operating_voltage;
+		printf("output voltage = %.3f \r\n", output_voltage);
+		wait(0.5);
+	}
 }
