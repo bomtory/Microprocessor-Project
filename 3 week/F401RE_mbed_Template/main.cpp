@@ -9,7 +9,7 @@
 // Implement #1
 #define threshold 0.5
 #define threshold_alti 2.0
-#define threshold_temperature 1.0f
+#define threshold_temperature 2.0f
 
 SPI acc(PB_15, PB_14, PB_13);
 DigitalOut cs(PB_12);
