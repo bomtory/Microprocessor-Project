@@ -17,7 +17,7 @@
         <TargetCommonOption>
           <Device>STM32F401RETx</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F4xx_DFP.3.0.0</PackID>
+          <PackID>Keil.STM32F4xx_DFP.2.17.1</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00018000) IROM(0x08000000,0x00080000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -594,6 +594,16 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
+            </File>
+            <File>
+              <FileName>motordriver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\motordriver.h</FilePath>
+            </File>
+            <File>
+              <FileName>mbed.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\mbed.h</FilePath>
             </File>
           </Files>
         </Group>
