@@ -1,7 +1,7 @@
 #include "mbed.h"
 #include "motordriver.h"
 
-InterruptIn button1(PA_14);
+InterruptIn button1(PA_7);
 InterruptIn button2(PB_7);
 InterruptIn button3(PC_4);
 Serial pc(USBTX, USBRX);
