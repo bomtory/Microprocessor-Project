@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\build\Nucleo_blink_led.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\build\Nucleo_blink_led.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Nov 14 16:56:19 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Nov 14 17:04:40 2024
 <BR><P>
 <H3>Maximum Stack Usage =        320 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -102,7 +102,6 @@ Function Pointers
  <LI><a href="#[13]">WWDG_IRQHandler</a> from startup_stm32f401xe.o(.text) referenced from startup_stm32f401xe.o(RESET)
  <LI><a href="#[7b]">change_direction()</a> from main.o(.text) referenced from main.o(.text)
  <LI><a href="#[7d]">acc()</a> from main.o(.text) referenced from main.o(.text)
- <LI><a href="#[80]">dec()</a> from main.o(.text) referenced from main.o(.text)
  <LI><a href="#[67]">mbed::FileHandle::~FileHandle__sub_object()</a> from retarget.o(i._ZN4mbed10FileHandleD2Ev) referenced from retarget.o(.constdata__ZTVN4mbed10FileHandleE)
  <LI><a href="#[56]">mbed::SerialBase::_irq_handler(unsigned, SerialIrq)</a> from SerialBase.o(i._ZN4mbed10SerialBase12_irq_handlerEj9SerialIrq) referenced from SerialBase.o(i._ZN4mbed10SerialBaseC1E7PinNameS1_)
  <LI><a href="#[57]">mbed::InterruptIn::_irq_handler(unsigned, gpio_irq_event)</a> from InterruptIn.o(i._ZN4mbed11InterruptIn12_irq_handlerEj14gpio_irq_event) referenced from InterruptIn.o(i._ZN4mbed11InterruptInC1E7PinName)
@@ -233,10 +232,8 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.text)
 </UL>
-<P><STRONG><a name="[80]"></a>dec()</STRONG> (Thumb, 120 bytes, Stack size 24 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = dec() &rArr; __aeabi_dsub &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; _double_round
-</UL>
-<BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wait
+<P><STRONG><a name="[80]"></a>dec()</STRONG> (Thumb, 120 bytes, Stack size 24 bytes, main.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wait
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
@@ -244,9 +241,8 @@ Global Symbols
 <LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::printf(const char*, ...)
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_current_state()
 </UL>
-<BR>[Address Reference Count : 1]<UL><LI> main.o(.text)
-</UL>
-<P><STRONG><a name="[83]"></a>$Super$$main</STRONG> (Thumb, 84 bytes, Stack size 0 bytes, main.o(.text))
+
+<P><STRONG><a name="[83]"></a>$Super$$main</STRONG> (Thumb, 74 bytes, Stack size 0 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 224<LI>Call Chain = $Super$$main &rArr; Motor::backward(float) &rArr; mbed::PwmOut::operator =(float) &rArr; pwmout_write &rArr; error &rArr; exit &rArr; mbed_die &rArr;  mbed_assert_internal (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::backward(float)
@@ -648,10 +644,8 @@ Global Symbols
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
 </UL>
 
-<P><STRONG><a name="[82]"></a>__aeabi_dsub</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, dadd.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = __aeabi_dsub &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; _double_round
-</UL>
-<BR>[Calls]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<P><STRONG><a name="[82]"></a>__aeabi_dsub</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, dadd.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dec()
 </UL>
@@ -666,7 +660,7 @@ Global Symbols
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_current_state()
 </UL>
 
-<P><STRONG><a name="[81]"></a>__aeabi_cdrcmple</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, cdrcmple.o(.text))
+<P><STRONG><a name="[81]"></a>__aeabi_cdrcmple</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, cdrcmple.o(.text), UNUSED)
 <BR><BR>[Called By]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dec()
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
 </UL>
@@ -1810,7 +1804,7 @@ Global Symbols
 <H3>
 Local Symbols
 </H3>
-<P><STRONG><a name="[6f]"></a>__sti___8_main_cpp_button1</STRONG> (Thumb, 92 bytes, Stack size 8 bytes, main.o(.text))
+<P><STRONG><a name="[6f]"></a>__sti___8_main_cpp_button1</STRONG> (Thumb, 74 bytes, Stack size 8 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = __sti___8_main_cpp_button1 &rArr; mbed::Serial::Serial(PinName, PinName, const char*) &rArr; mbed::Stream::Stream__sub_object(const char*) &rArr; fopen &rArr; freopen &rArr; _sys_open &rArr; __0sscanf &rArr; __vfscanf_char &rArr; __vfscanf &rArr; _scanf_int
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::Motor(PinName, PinName)

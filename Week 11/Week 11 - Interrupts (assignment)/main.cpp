@@ -2,8 +2,8 @@
 #include "motordriver.h"
 
 InterruptIn button1(PB_7);
-InterruptIn button2(PB_7);
-InterruptIn button3(PC_4);
+InterruptIn button2(PC_4);
+//InterruptIn button3(PC_4);
 Serial pc(USBTX, USBRX);
 Motor A(D11, PC_8);
 
@@ -50,7 +50,7 @@ int main() {
 	print_current_state();
     button1.fall(&change_direction);  
     button2.fall(&acc);
-	button3.fall(&dec);
+	//button3.fall(&dec);
 	A.forward(speed);
 	while(1) {
 		if(direction == 1) {
