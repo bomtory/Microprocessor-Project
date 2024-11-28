@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\build\OLED-SSD1306.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\build\OLED-SSD1306.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Mon Nov 25 21:29:12 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Nov 28 16:11:47 2024
 <BR><P>
 <H3>Maximum Stack Usage =        672 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -273,16 +273,16 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.text)
 </UL>
-<P><STRONG><a name="[b0]"></a>$Super$$main</STRONG> (Thumb, 102 bytes, Stack size 16 bytes, main.o(.text))
+<P><STRONG><a name="[b0]"></a>$Super$$main</STRONG> (Thumb, 114 bytes, Stack size 16 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = $Super$$main &rArr; Adafruit_SSD1306::begin(unsigned char) &rArr; DigitalOut2::operator =(int) &rArr; mbed_assert_internal &rArr; error &rArr; exit &rArr; mbed_die &rArr;  mbed_assert_internal (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::printf(const char*, ...)
-<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::InterruptIn::fall(void(*)())
+<BR>[Calls]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::InterruptIn::fall(void(*)())
 <LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Adafruit_SSD1306::display()
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Adafruit_SSD1306::begin(unsigned char)
 <LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Adafruit_SSD1306::clearDisplay()
 <LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Adafruit_GFX::drawCircle(short, short, short, unsigned short)
 <LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wait
+<LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::printf(const char*, ...)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1344,10 +1344,10 @@ Global Symbols
 <P><STRONG><a name="[b8]"></a>Adafruit_SSD1306::Adafruit_SSD1306__sub_object(PinName, unsigned char, unsigned char)</STRONG> (Thumb, 218 bytes, Stack size 32 bytes, main.o(i._ZN16Adafruit_SSD1306C2E7PinNamehh))
 <BR><BR>[Stack]<UL><LI>Max Depth = 384<LI>Call Chain = Adafruit_SSD1306::Adafruit_SSD1306__sub_object(PinName, unsigned char, unsigned char) &rArr; mbed::Stream::Stream__sub_object(const char*) &rArr; fopen &rArr; freopen &rArr; _sys_open &rArr; __0sscanf &rArr; __vfscanf_char &rArr; __vfscanf &rArr; _scanf_real
 </UL>
-<BR>[Calls]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::Stream__sub_object(const char*)
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::vector&lang;unsigned char, std::allocator&lang;unsigned char&rang;&rang;::_C_insert_aux(unsigned char*, unsigned, const unsigned char&)
+<BR>[Calls]<UL><LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::vector&lang;unsigned char, std::allocator&lang;unsigned char&rang;&rang;::_C_insert_aux(unsigned char*, unsigned, const unsigned char&)
 <LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed_assert_internal
 <LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_init_out
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::Stream__sub_object(const char*)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__sti___8_main_cpp_myI2C
 </UL>
@@ -1369,8 +1369,8 @@ Global Symbols
 <P><STRONG><a name="[5c]"></a>Adafruit_SSD1306_I2c::~Adafruit_SSD1306_I2c()</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, main.o(i._ZN20Adafruit_SSD1306_I2cD1Ev))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Adafruit_SSD1306_I2c::~Adafruit_SSD1306_I2c() &rArr; mbed::Stream::~Stream__sub_object() &rArr; fclose &rArr; free
 </UL>
-<BR>[Calls]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::~Stream__sub_object()
-<LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rw::__rw_deallocate(void*, unsigned, int)
+<BR>[Calls]<UL><LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rw::__rw_deallocate(void*, unsigned, int)
+<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::~Stream__sub_object()
 </UL>
 <BR>[Address Reference Count : 2]<UL><LI> main.o(.text)
 <LI> main.o(.constdata__ZTV20Adafruit_SSD1306_I2c)
@@ -2228,8 +2228,8 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 4]<UL><LI> adafruit_ssd1306.o(.constdata__ZTV16Adafruit_SSD1306)
 <LI> retarget.o(.constdata__ZTVN4mbed10FileHandleE)
-<LI> FileLike.o(.constdata__ZTVN4mbed8FileLikeE)
 <LI> Stream.o(.constdata__ZTVN4mbed6StreamE)
+<LI> FileLike.o(.constdata__ZTVN4mbed8FileLikeE)
 </UL>
 <P><STRONG><a name="[16b]"></a>__cxa_vec_new</STRONG> (Thumb, 18 bytes, Stack size 32 bytes, cxa_vec_new.o(i.__cxa_vec_new))
 <BR><BR>[Stack]<UL><LI>Max Depth = 140<LI>Call Chain = __cxa_vec_new &rArr; __ARM_array_new_general &rArr; std::terminate() &rArr; __cxa_get_globals &rArr; __ARM_exceptions_buffer_init &rArr; malloc
@@ -2259,8 +2259,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[16e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sys_seek
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::printf(const char*, ...)
-<LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
+<BR>[Called By]<UL><LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
+<LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::printf(const char*, ...)
 </UL>
 
 <P><STRONG><a name="[13c]"></a>fopen</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, fopen_f.o(i._fopen$full))

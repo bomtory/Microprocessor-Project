@@ -36,11 +36,13 @@ int main(){
 	x_button.fall(&X_BUTTON_ISR);
 	y_button.fall(&Y_BUTTON_ISR);
 	while(1){
-		// erase current display
-		// draw circle according to x, y coordinate
-		// display string (current x, y coordinate)
-		// display updated buffer (send data to OLED via I2C interface)
-
+		myGUI.clearDisplay(); // erase current display
+		myGUI.drawCircle(x, y, r, WHITE); // draw circle according to x, y coordinate
+		myGUI.setTextCursor(0, 0);
+		myGUI.setTextSize(1);
+		myGUI.setTextColor(WHITE);
+		myGUI.printf("x: %d, y: %d", x, y); // display string (current x, y coordinate)
+		myGUI.display(); // display updated buffer (send data to OLED via I2C interface)
 		wait(0.01);
 	}
 }
