@@ -1,62 +1,69 @@
 #include "mbed.h"
-#include "motordriver.h"
 
-InterruptIn button1(PB_7);
-InterruptIn button2(PC_4);
-//InterruptIn button3(PC_4);
+Timer timer;
+Timeout timeout;
+Ticker ticker;
+
 Serial pc(USBTX, USBRX);
-Motor A(D11, PC_8);
 
-int direction = 1;
-float speed = 0.1;
+AnalogIn light_sensor(A0);
+DigitalOut led(LED1);
+DigitalOut rgb_led(PC_6);
 
-void print_current_state() {
-	pc.printf("Current State:\r\n");
-	pc.printf("direction: %d\r\n", direction);
-	pc.printf("speed: %3.1f\r\n\n", speed);
-}
-	
-void change_direction() {
-	direction = !direction;
-	pc.printf("Change Rotation Direction to %d\r\n", direction);
-	print_current_state();
-	wait(0.2);
-}
+void print_question();
+void time_is_out();
+void success();
+void fail();
+void blink_rgb_led();
+void blink_led();
 
-void acc() {
-	if(speed < 1) {
-		speed += 0.1; 
-		pc.printf("Increase Speed to %3.1f\r\n", speed);
-	} else {
-		pc.printf("Reached Max Speed (No Increase)\r\n");
-	}
-	print_current_state();
-	wait(0.2); 
+void print_question() {
+	printf("If you are ready to answer, press any button. \r\n");
+	pc.getc();
+	printf("7 + 2 = ? \r\n");
+	timeout.attach(&time_is_out, 2.0); //set a timeout which calls 'time is out' function after 2 seconds
 }
 
+void time_is_out() {
+	printf("TIME OUT: Try again. \r\n\n");
+	wait(1);
+	print_question();
+}
 
-void dec() {
-	if (speed>0.2) {
-		speed -= 0.1;
-		pc.printf("Decrease Speed to %3.1f\r\n", speed);
-	} else {
-		pc.printf("Reached MIN speed (No Decrease)\r\n");
-	}
-	print_current_state();
-	wait(0.2);
+void success() {
+	printf("Coreect! Good job. \r\n");
+	ticker.attach(&blink_rgb_led, 0.1);
+	wait(3);
+	ticker.detach();
+}
+
+void fail() {
+	printf("Wrong! Try again. \r\n\n");
+	ticker.attach(&blink_rgb_led, 0.5); // set a ticker which calls
+	wait(3);
+	ticker.detach(); // exit the ticker you set above
+}
+
+void blink_rgb_led() {
+	rgb_led =! rgb_led;
+}
+
+void blink_led() {
+	led =! led;
 }
 
 int main() {
-	print_current_state();
-    button1.fall(&change_direction);  
-    button2.fall(&acc);
-	//button3.fall(&dec);
-	A.forward(speed);
 	while(1) {
-		if(direction == 1) {
-			A.forward(speed);
-		} else {
-			A.backward(speed);
+		print_question();
+		char your_answer = pc.getc();
+		timeout.detach(); // cancel timeout because the answer has been input
+		printf("Your answer is %c \r\n", your_answer);
+		if (your_answer == '9') {
+			success();
+			break;
+		}
+		else {
+			fail();
 		}
 	}
 }
