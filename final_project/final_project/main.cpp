@@ -227,7 +227,7 @@ I2C myI2C(I2C_SDA,I2C_SCL);
 Adafruit_SSD1306_I2c myGUI(myI2C,D13,0x78,64,128);
 AnalogIn x_axis(PC_2);
 AnalogIn y_axis(PC_3);
-InterruptIn button(PA_15);
+InterruptIn button(PB_7);
 Player player = Player(1);
 Enemy enemy0 = Enemy(0);
 Enemy enemy1 = Enemy(1);
@@ -345,21 +345,27 @@ int main() {
 		switch(player.check_line()){
 			case 0:
 				// ???? ?? ???? ? ???? check?? life? ??? ??
-				board.life_down();
-				enemy0.danger_false();
-				play_buzzer();
+				if (enemy0.check_danger()) {
+					board.life_down();
+					enemy0.danger_false();
+					play_buzzer();
+				}
 				break;
 			case 1:
 				// ???? ?? ???? ? ???? check?? life? ??? ??
-				board.life_down();
-				enemy1.danger_false();
-				play_buzzer();
+				if (enemy1.check_danger()) {
+					board.life_down();
+					enemy0.danger_false();
+					play_buzzer();
+				}
 				break;
 			case 2:
 				// ???? ?? ???? ? ???? check?? life? ??? ??
-				board.life_down();
-				enemy2.danger_false();
-				play_buzzer();
+				if (enemy2.check_danger()) {
+					board.life_down();
+					enemy0.danger_false();
+					play_buzzer();
+				}
 				break;
 		}
 		// life? check?? 0??? ???? game over
