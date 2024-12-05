@@ -91,10 +91,10 @@ class Board{
 			// ?????? string? ???? ?? ??
 			// fill
 			for (int i = 0; i < Array_len; i++) {
-				display -> setTextCursor(x + i*6, y);
-				display -> write(charClear[i]);	// Clear prev char
-				display -> setTextCursor(x + i*6, y);
-				display -> write(charArray[i]);	// Update char
+				display -> setTextCursor(x, y);
+				for (int i = 0; i < Array_len; i++) {
+					display -> printf("%c", charArray[i]); 	// Print each character
+				}
 			}
 		}
 
@@ -193,6 +193,7 @@ class Enemy{
 			// return danger
 			return danger;
 		}
+		
 	protected:
 	
 		uint8_t x;
@@ -258,9 +259,6 @@ void joystick_Handler(){
 }
 void time_Handler(){
 	board.time_up();	// Increment time
-	if (board.check_time() % 10 == 0) {
-		// fill
-	}
 }
 void create_enemy(){
 	// Activate the enemy in random lane
@@ -282,13 +280,32 @@ void create_enemy(){
 			break;
 	}
 }
+
+// New method
+void play_buzzer() {
+	// Buzzer sound for collisions
+	DigitalOut buzzer(PA_14);
+	buzzer = 1;
+	wait_us(500000);	// beep 0.5s
+	buzzer = 0;
+}
+
 // Pause menu phase has to be declared by interrupt with button!
+
+// New method
+void start_game() {
+	state = 0;	// Set game state to start
+}
+
 
 int main() {
 	//Initialize Game
 	myGUI.clearDisplay();
 	board.initScore(&myGUI);
 	//Start menu phase - ???
+	myGUI.printf("Press button to start");
+	myGUI.display();
+	button.rise(&start_game);	//Start game on button press
 
 	//Game phase
 	// Player movement has to be declared by interrupt with joystick!
@@ -327,18 +344,21 @@ int main() {
 		switch(player.check_line()){
 			case 0:
 				// ???? ?? ???? ? ???? check?? life? ??? ??
-				//
-				//
+				board.life_down();
+				enemy0.danger_false();
+				play_buzzer();
 				break;
 			case 1:
 				// ???? ?? ???? ? ???? check?? life? ??? ??
-				//
-				//
+				board.life_down();
+				enemy1.danger_false();
+				play_buzzer();
 				break;
 			case 2:
 				// ???? ?? ???? ? ???? check?? life? ??? ??
-				//
-				//
+				board.life_down();
+				enemy2.danger_false();
+				play_buzzer();
 				break;
 		}
 		// life? check?? 0??? ???? game over
