@@ -89,7 +89,6 @@ class Board{
 
 		void drawStr (int16_t x, int16_t y, Adafruit_SSD1306_I2c *display, int Array_len, char* charArray, char* charClear){
 			// ?????? string? ???? ?? ??
-			// fill
 			for (int i = 0; i < Array_len; i++) {
 				display -> setTextCursor(x, y);
 				for (int i = 0; i < Array_len; i++) {
@@ -338,7 +337,9 @@ int main() {
 		enemy1.move(board);
 		enemy2.move(board);
 		// Display current phase
+		board.drawScore(&myGUI);
 		// Display player, enemies
+		myGUI.display();
 		
 		
 		switch(player.check_line()){
@@ -362,6 +363,8 @@ int main() {
 				break;
 		}
 		// life? check?? 0??? ???? game over
+		if (board.check_life() == 0) {
+			break;
 		}
 		// Display Scoreboard
 		generate_count ++;
