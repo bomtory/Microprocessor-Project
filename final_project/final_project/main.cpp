@@ -18,7 +18,7 @@ public:
 
 class Player{
 	public:
-		Player(uint8_t startLine = 0) : line(startLine) {}
+		Player(uint8_t startLine = 1) : line(startLine) {}
 	
 		void move_up(){
 			if (line > 0) line -= 1;
@@ -175,6 +175,7 @@ class Enemy{
 		void activate() {
 			// set active state to true
 			active = true;
+			x = 13;
 		}
 		void deactivate() {
 			// set active state to false
@@ -293,6 +294,9 @@ void play_buzzer() {
 
 // New method
 void start_game() {
+	myGUI.clearDisplay();
+	board.initScore(&myGUI);
+	myGUI.display();
 	state = 0;	// Set game state to start
 }
 
@@ -304,7 +308,9 @@ int main() {
 	//Start menu phase - ???
 	myGUI.printf("Press button to start");
 	myGUI.display();
+	
 	button.rise(&start_game);	//Start game on button press
+	
 
 	//Game phase
 	// Player movement has to be declared by interrupt with joystick!

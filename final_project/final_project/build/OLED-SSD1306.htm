@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\build\OLED-SSD1306.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\build\OLED-SSD1306.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Dec 05 17:14:02 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Dec 05 17:33:14 2024
 <BR><P>
 <H3>Maximum Stack Usage =        672 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -103,7 +103,7 @@ Function Pointers
  <LI><a href="#[56]">USART6_IRQHandler</a> from startup_stm32f401xe.o(.text) referenced from startup_stm32f401xe.o(RESET)
  <LI><a href="#[1e]">UsageFault_Handler</a> from startup_stm32f401xe.o(.text) referenced from startup_stm32f401xe.o(RESET)
  <LI><a href="#[23]">WWDG_IRQHandler</a> from startup_stm32f401xe.o(.text) referenced from startup_stm32f401xe.o(RESET)
- <LI><a href="#[be]">start_game()</a> from main.o(.text) referenced from main.o(.text)
+ <LI><a href="#[b9]">start_game()</a> from main.o(.text) referenced from main.o(.text)
  <LI><a href="#[c1]">time_Handler()</a> from main.o(.text) referenced from main.o(.text)
  <LI><a href="#[b1]">joystick_Handler()</a> from main.o(.text) referenced from main.o(.text)
  <LI><a href="#[6d]">__default_new_handler()</a> from arm_newhandler_noexceptions.o(.text) referenced from new.o(i._Znwj)
@@ -276,12 +276,12 @@ Global Symbols
 <P><STRONG><a name="[c1]"></a>time_Handler()</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, main.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.text)
 </UL>
-<P><STRONG><a name="[b3]"></a>create_enemy()</STRONG> (Thumb, 62 bytes, Stack size 8 bytes, main.o(.text))
+<P><STRONG><a name="[b3]"></a>create_enemy()</STRONG> (Thumb, 68 bytes, Stack size 8 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = create_enemy()
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rand
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
 <P><STRONG><a name="[b5]"></a>play_buzzer()</STRONG> (Thumb, 34 bytes, Stack size 24 bytes, main.o(.text))
@@ -291,13 +291,19 @@ Global Symbols
 <LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::DigitalOut::write(int)
 <LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wait_us
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
-<P><STRONG><a name="[be]"></a>start_game()</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, main.o(.text))
+<P><STRONG><a name="[b9]"></a>start_game()</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = start_game() &rArr; Board::initScore(Adafruit_SSD1306_I2c*) &rArr; Board::drawStr(short, short, Adafruit_SSD1306_I2c*, int, char*, char*) &rArr; mbed::Stream::printf(const char*, ...) &rArr; __c89vfprintf
+</UL>
+<BR>[Calls]<UL><LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Board::initScore(Adafruit_SSD1306_I2c*)
+<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Adafruit_SSD1306::display()
+<LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Adafruit_SSD1306::clearDisplay()
+</UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.text)
 </UL>
-<P><STRONG><a name="[b9]"></a>$Super$$main</STRONG> (Thumb, 676 bytes, Stack size 48 bytes, main.o(.text))
+<P><STRONG><a name="[bd]"></a>$Super$$main</STRONG> (Thumb, 676 bytes, Stack size 48 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = $Super$$main &rArr; play_buzzer() &rArr; mbed::DigitalOut::write(int) &rArr; mbed_assert_internal &rArr; error &rArr; exit &rArr; mbed_die &rArr;  mbed_assert_internal (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Enemy::move(Board&)
@@ -305,11 +311,11 @@ Global Symbols
 <LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Board::drawScore(Adafruit_SSD1306_I2c*)
 <LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Ticker::attach(void(*)(), float)
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wait_ms
-<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::printf(const char*, ...)
+<LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::printf(const char*, ...)
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Timer::read_ms()
 <LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Timer::start()
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::InterruptIn::rise(void(*)())
-<LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Adafruit_SSD1306::display()
+<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Adafruit_SSD1306::display()
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Adafruit_SSD1306::clearDisplay()
 <LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Adafruit_GFX::drawBitmap(short, short, const unsigned char*, short, short, unsigned short)
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;play_buzzer()
@@ -380,7 +386,7 @@ Global Symbols
 <P><STRONG><a name="[c3]"></a>Adafruit_GFX::drawBitmap(short, short, const unsigned char*, short, short, unsigned short)</STRONG> (Thumb, 102 bytes, Stack size 40 bytes, adafruit_gfx.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = Adafruit_GFX::drawBitmap(short, short, const unsigned char*, short, short, unsigned short)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
 <P><STRONG><a name="[8b]"></a>Adafruit_GFX::drawLine(short, short, short, short, unsigned short)</STRONG> (Thumb, 172 bytes, Stack size 56 bytes, adafruit_gfx.o(.text))
@@ -419,18 +425,20 @@ Global Symbols
 <LI> adafruit_ssd1306.o(.constdata__ZTV16Adafruit_SSD1306)
 </UL>
 <P><STRONG><a name="[ba]"></a>Adafruit_SSD1306::clearDisplay()</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, adafruit_ssd1306.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<BR><BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;start_game()
 </UL>
 
 <P><STRONG><a name="[87]"></a>Adafruit_SSD1306::invertDisplay(bool)</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, adafruit_ssd1306.o(.text))
 <BR>[Address Reference Count : 2]<UL><LI> main.o(.constdata__ZTV20Adafruit_SSD1306_I2c)
 <LI> adafruit_ssd1306.o(.constdata__ZTV16Adafruit_SSD1306)
 </UL>
-<P><STRONG><a name="[bd]"></a>Adafruit_SSD1306::display()</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, adafruit_ssd1306.o(.text))
+<P><STRONG><a name="[bc]"></a>Adafruit_SSD1306::display()</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, adafruit_ssd1306.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Adafruit_SSD1306::display()
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__sti___8_main_cpp_y_lock
-<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;start_game()
 </UL>
 
 <P><STRONG><a name="[8f]"></a>Adafruit_SSD1306::splash()</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, adafruit_ssd1306.o(.text))
@@ -1151,7 +1159,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = main &rArr; $Super$$main &rArr; play_buzzer() &rArr; mbed::DigitalOut::write(int) &rArr; mbed_assert_internal &rArr; error &rArr; exit &rArr; mbed_die &rArr;  mbed_assert_internal (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed_main
-<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 <LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed_sdk_init
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
@@ -1638,7 +1646,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_irq_set
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
 <P><STRONG><a name="[cd]"></a>mbed::InterruptIn::InterruptIn(PinName)</STRONG> (Thumb, 60 bytes, Stack size 16 bytes, InterruptIn.o(i._ZN4mbed11InterruptInC1E7PinName))
@@ -1693,7 +1701,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[156]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ticker_read
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
 <P><STRONG><a name="[c6]"></a>mbed::Timer::read_ms()</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, Timer.o(i._ZN4mbed5Timer7read_msEv))
@@ -1701,7 +1709,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[156]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ticker_read
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
 <P><STRONG><a name="[cf]"></a>mbed::Timer::Timer()</STRONG> (Thumb, 30 bytes, Stack size 16 bytes, Timer.o(i._ZN4mbed5TimerC1Ev))
@@ -1732,13 +1740,13 @@ Global Symbols
 <LI> adafruit_ssd1306.o(.constdata__ZTV16Adafruit_SSD1306)
 <LI> Stream.o(.constdata__ZTVN4mbed6StreamE)
 </UL>
-<P><STRONG><a name="[bc]"></a>mbed::Stream::printf(const char*, ...)</STRONG> (Thumb, 30 bytes, Stack size 32 bytes, Stream.o(i._ZN4mbed6Stream6printfEPKcz))
+<P><STRONG><a name="[be]"></a>mbed::Stream::printf(const char*, ...)</STRONG> (Thumb, 30 bytes, Stack size 32 bytes, Stream.o(i._ZN4mbed6Stream6printfEPKcz))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = mbed::Stream::printf(const char*, ...) &rArr; __c89vfprintf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[158]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__c89vfprintf
 <LI><a href="#[157]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fflush
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 <LI><a href="#[166]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Board::drawStr(short, short, Adafruit_SSD1306_I2c*, int, char*, char*)
 </UL>
 
@@ -1780,7 +1788,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[15d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Ticker::setup(unsigned)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
 <P><STRONG><a name="[95]"></a>mbed::Ticker::handler()</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, Ticker.o(i._ZN4mbed6Ticker7handlerEv))
@@ -1911,7 +1919,7 @@ Global Symbols
 <P><STRONG><a name="[166]"></a>Board::drawStr(short, short, Adafruit_SSD1306_I2c*, int, char*, char*)</STRONG> (Thumb, 58 bytes, Stack size 32 bytes, main.o(i._ZN5Board7drawStrEssP20Adafruit_SSD1306_I2ciPcS2_))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = Board::drawStr(short, short, Adafruit_SSD1306_I2c*, int, char*, char*) &rArr; mbed::Stream::printf(const char*, ...) &rArr; __c89vfprintf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::printf(const char*, ...)
+<BR>[Calls]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::printf(const char*, ...)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Board::initScore(Adafruit_SSD1306_I2c*)
 <LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Board::drawScore(Adafruit_SSD1306_I2c*)
@@ -1923,7 +1931,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[166]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Board::drawStr(short, short, Adafruit_SSD1306_I2c*, int, char*, char*)
 <LI><a href="#[167]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Board::Int2CharArray(int, char*)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
 <P><STRONG><a name="[bb]"></a>Board::initScore(Adafruit_SSD1306_I2c*)</STRONG> (Thumb, 264 bytes, Stack size 104 bytes, main.o(i._ZN5Board9initScoreEP20Adafruit_SSD1306_I2c))
@@ -1932,11 +1940,12 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[166]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Board::drawStr(short, short, Adafruit_SSD1306_I2c*, int, char*, char*)
 <LI><a href="#[167]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Board::Int2CharArray(int, char*)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;start_game()
 </UL>
 
 <P><STRONG><a name="[c4]"></a>Enemy::move(Board&)</STRONG> (Thumb, 44 bytes, Stack size 0 bytes, main.o(i._ZN5Enemy4moveER5Board))
-<BR><BR>[Called By]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<BR><BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
 <P><STRONG><a name="[9e]"></a>std::__rw_exception::what() const</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, rwstdexcept.o(i._ZNKSt14__rw_exception4whatEv))
@@ -2411,7 +2420,7 @@ Global Symbols
 <P><STRONG><a name="[158]"></a>__c89vfprintf</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, printfa.o(i.__0vfprintf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __c89vfprintf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::printf(const char*, ...)
+<BR>[Called By]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::printf(const char*, ...)
 </UL>
 
 <P><STRONG><a name="[1a2]"></a>vfprintf</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, printfa.o(i.__0vfprintf))
@@ -2507,7 +2516,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[190]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sys_seek
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
-<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::printf(const char*, ...)
+<LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Stream::printf(const char*, ...)
 </UL>
 
 <P><STRONG><a name="[15b]"></a>fopen</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, fopen_f.o(i._fopen$full))
@@ -2966,7 +2975,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;us_ticker_read
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 <LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed_die
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Adafruit_SSD1306::begin(unsigned char)
 </UL>
@@ -3229,7 +3238,7 @@ Global Symbols
 <H3>
 Local Symbols
 </H3>
-<P><STRONG><a name="[a5]"></a>__sti___8_main_cpp_y_lock</STRONG> (Thumb, 376 bytes, Stack size 16 bytes, main.o(.text))
+<P><STRONG><a name="[a5]"></a>__sti___8_main_cpp_y_lock</STRONG> (Thumb, 378 bytes, Stack size 16 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 392<LI>Call Chain = __sti___8_main_cpp_y_lock &rArr; Adafruit_SSD1306::Adafruit_SSD1306__sub_object(PinName, unsigned char, unsigned char) &rArr; mbed::Stream::Stream__sub_object(const char*) &rArr; fopen &rArr; freopen &rArr; _sys_open &rArr; __0sscanf &rArr; __vfscanf_char &rArr; __vfscanf &rArr; _scanf_real
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Ticker::Ticker()
@@ -3238,7 +3247,7 @@ Local Symbols
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::Timer::Timer()
 <LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::I2C::I2C(PinName, PinName)
 <LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed::InterruptIn::InterruptIn(PinName)
-<LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Adafruit_SSD1306::display()
+<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Adafruit_SSD1306::display()
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Adafruit_SSD1306::splash()
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Adafruit_SSD1306::begin(unsigned char)
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_atexit
