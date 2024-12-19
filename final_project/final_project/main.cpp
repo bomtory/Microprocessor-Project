@@ -279,17 +279,17 @@ void create_enemy(){
 	}
 }
 
-DigitalOut buzzer(PB_7);
+DigitalOut sound(PB_7);
 Ticker buzzerTicker;
 
 // New method
 void stop_buzzer() {
-	buzzer = 0;
+	sound = 0;
 }
 
 void play_buzzer() {
 	// Buzzer sound for collisions
-	buzzer = 1;
+	sound = 1;
 	buzzerTicker.attach(&stop_buzzer, 0.5);
 }
 
@@ -346,10 +346,12 @@ int main() {
 		if (enemy0.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 7, motorcycle_bitmap_right, 7, 10, WHITE);
 		if (enemy0.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7, 7, motorcycle_bitmap_left, 7, 10, BLACK);
 		if (enemy0.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7, 7, motorcycle_bitmap_right, 7, 10, BLACK);
+		
 		if (enemy1.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 27, motorcycle_bitmap_left, 7, 10, WHITE);
 		if (enemy1.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 27, motorcycle_bitmap_right, 7, 10, WHITE);
 		if (enemy1.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7, 27, motorcycle_bitmap_left, 7, 10, BLACK);
 		if (enemy1.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7, 27, motorcycle_bitmap_right, 7, 10, BLACK);
+		
 		if (enemy2.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 47, motorcycle_bitmap_left, 7, 10, WHITE);
 		if (enemy2.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 47, motorcycle_bitmap_right, 7, 10, WHITE);
 		if (enemy2.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7, 47, motorcycle_bitmap_left, 7, 10, BLACK);
