@@ -89,11 +89,9 @@ class Board{
 
 		void drawStr (int16_t x, int16_t y, Adafruit_SSD1306_I2c *display, int Array_len, char* charArray, char* charClear){
 			// ?????? string? ???? ?? ??
+			display -> setTextCursor(x, y);
 			for (int i = 0; i < Array_len; i++) {
-				display -> setTextCursor(x, y);
-				for (int i = 0; i < Array_len; i++) {
-					display -> printf("%c", charArray[i]); 	// Print each character
-				}
+				display -> printf("%c", charArray[i]); 	// Print each character
 			}
 		}
 
@@ -281,7 +279,7 @@ void create_enemy(){
 	}
 }
 
-DigitalOut buzzer(PA_14);
+DigitalOut buzzer(PB_7);
 Ticker buzzerTicker;
 
 // New method
@@ -300,17 +298,18 @@ void play_buzzer() {
 
 // New method
 void start_game() {
+	//Initialize Game
 	myGUI.clearDisplay();
 	board.initScore(&myGUI);
+	// Set game state to start
+	counter.attach(time_Handler, 1);	
+	t.start();
 	myGUI.display();
-	state = 0;	// Set game state to start
+	state = 0;
 }
 
 
 int main() {
-	//Initialize Game
-	myGUI.clearDisplay();
-	board.initScore(&myGUI);
 	//Start menu phase - ???
 	myGUI.printf("Press button to start");
 	myGUI.display();
@@ -321,8 +320,7 @@ int main() {
 	//Game phase
 	// Player movement has to be declared by interrupt with joystick!
 	joystick.attach(joystick_Handler, 0.005);
-	counter.attach(time_Handler, 1);
-	t.start();
+	
 	while(1) { // Game loop
 		if(generate_count== 20){
 			create_enemy();
@@ -330,15 +328,20 @@ int main() {
 		}
 		
 		y_lock = true;
+		
+		// Erase prev player position
 		myGUI.drawBitmap(0, 5 + player.check_line()*20, car_bitmap, 14, 14, BLACK); // Player
+		// Update player position
 		if (state==1){
 			player.move_down();
 		}else if(state==2){
 			player.move_up();
 		}
+		// Draw updated player position
 		myGUI.drawBitmap(0, 5 + player.check_line()*20, car_bitmap, 14, 14, WHITE); // Player
 		y_lock = false;
 		
+		// Draw enemies
 		if (enemy0.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 7, motorcycle_bitmap_left, 7, 10, BLACK);
 		if (enemy0.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7, 7, motorcycle_bitmap_right, 7, 10, BLACK);
 		if (enemy1.check_x() > 0) myGUI.drawBitmap(enemy1.check_x()*7 - 7, 27, motorcycle_bitmap_left, 7, 10, BLACK);
@@ -367,7 +370,7 @@ int main() {
 				// ???? ?? ???? ? ???? check?? life? ??? ??
 				if (enemy1.check_danger()) {
 					board.life_down();
-					enemy0.danger_false();
+					enemy1.danger_false();
 					play_buzzer();
 				}
 				break;
@@ -375,7 +378,7 @@ int main() {
 				// ???? ?? ???? ? ???? check?? life? ??? ??
 				if (enemy2.check_danger()) {
 					board.life_down();
-					enemy0.danger_false();
+					enemy2.danger_false();
 					play_buzzer();
 				}
 				break;
@@ -399,4 +402,3 @@ int main() {
 	myGUI.printf("You survived for\n%u seconds!", board.check_time());
 	myGUI.display();
 }
-
