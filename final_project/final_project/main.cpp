@@ -2,7 +2,8 @@
 #include "Adafruit_SSD1306.h"
 #define PROGMEM
 
-
+PwmOut buzzer(PC_9); // Set the output voltage of the buzzer
+#define Mi 1000000/659 //Define the frquency of Mi
 
 // an I2C sub-class that provides a constructed default
 class I2CPreInit : public I2C
@@ -15,68 +16,54 @@ public:
     };
 };
 
-
+// Manage the player's position
 class Player{
 	public:
-		Player(uint8_t startLine = 1) : line(startLine) {}
+		Player(uint8_t startLine = 0) : line(startLine) {}
 	
 		void move_up(){
-			if (line > 0) line -= 1;
+			if (line != 0) line--; //If not on the top line 0, move upward
 		}
 		void move_down(){
-			if (line < 2) line += 1;
+			if (line != 2) line++; //If not on the bottom line 2, move downward
 		}
-		uint8_t check_line() {
-			return line;
+		uint8_t check_line() { // Access variable "line" from outside of class
+			return line; //Return the current state
 		}
 	
 	protected:
 		uint8_t line;
 };
+// Manage score and time(display on OLED)
 class Board{
 	public:
-		Board(Adafruit_SSD1306_I2c *display, uint8_t initialScore = 0, uint8_t initialLife = 3, int16_t orig_x = 93, int16_t orig_y = 10) 
-			: score(initialScore), life(initialLife), time(0), orig_x(orig_x), orig_y(orig_y){
+		Board(Adafruit_SSD1306_I2c *display, uint8_t initialScore = 0, uint8_t initialLife = 3, int16_t orig_x = 93, int16_t orig_y = 5) 
+			: score(initialScore), time(0), orig_x(orig_x), orig_y(orig_y){
 				for(int i = 0; i<2; i++){
 					score_clr[i] = '0';
 				}
 				for(int i = 0; i<3; i++){
 					time_clr[i] = '0';
 				}
-				for(int i = 0; i<1; i++){
-					life_clr[i] = '0';
-				}
 			}
 		void score_up(){
-			// increment score by 1
-			score++;
-		}
-		void life_down(){
-			// decrement life by 1
-			life--;
+			score++; // Increase the score by 1
 		}
 		void time_up(){
-			// increment time by 1
-			time++;
+			time++; // Increase the time by 1 
 		}
-		uint8_t check_score() {
-			// return score on method call
-			return score;
+		uint8_t check_score() { // Access variable "score" from outside of class
+			return score; // Return the current score
 		}
-		uint8_t check_life() {
-			// return life on method call
-			return life;
-		}
-		uint8_t check_time() {
-			// return time on method call
-			return time;
+		uint8_t check_time() { // Access variable "time" from outside of class
+			return time; // Return the current time
 		}
 		char* Int2CharArray(int number, char charArray[]){
 			int index = 0;
 			do {
-					charArray[index] = '0' + (int)(number % 10);
+					charArray[index] = '0' + (int)(number % 10); //Add '0' to convert the unit digit of an integer to ASCLL code
 					index++;
-					number = (int)(number/10);                            
+					number = (int)(number/10); //Manage the hundreds and tens digits                           
 			} while (number > 0);
 			
 			for (int i = 0; i < index / 2; ++i) {
@@ -88,36 +75,38 @@ class Board{
 		}
 
 		void drawStr (int16_t x, int16_t y, Adafruit_SSD1306_I2c *display, int Array_len, char* charArray, char* charClear){
-			// ?????? string? ???? ?? ??
-			display -> setTextCursor(x, y);
-			for (int i = 0; i < Array_len; i++) {
-				display -> printf("%c", charArray[i]); 	// Print each character
+			int16_t clr_x = x;
+			for(int i = 0; i<Array_len; i++){
+				display->drawChar(clr_x, y, charClear[i], BLACK, BLACK, 1);
+				clr_x = clr_x+6;
 			}
-		}
+			for(int i = 0; i<Array_len; i++){
+				display->drawChar(x, y, charArray[i], WHITE, WHITE, 1);
+				charClear[i] = charArray[i];
+				x = x+6;
+			}
+			
+		} 
 
 		void drawScore(Adafruit_SSD1306_I2c *display){
 			char score_cab[] = {0,0};
 			char *score_ca = Int2CharArray(score, score_cab);
 			char time_cab[] = {0,0,0};
 			char *time_ca = Int2CharArray(time,time_cab);
-			char life_cab[] = {0};
-			char *life_ca = Int2CharArray(life,life_cab);
-			drawStr(orig_x, score_y, display, 2, score_ca, score_clr);
-			drawStr(orig_x, time_y, display, 3, time_ca, time_clr);
-			drawStr(orig_x, life_y, display, 1, life_ca, life_clr);
+			// Display the values throughout execution
+			drawStr(orig_x, score_y, display, 2, score_ca, score_clr); // How can I display score? You can find it within Board class // Use the drawStr function to display the score throughout execution, length is defined below
+			drawStr(orig_x, time_y, display, 3, time_ca, time_clr); // How can I display time? You can find it within Board class // Use the drawStr function to display the time throughout execution, length is defined below
 		}
 		void initScore(Adafruit_SSD1306_I2c *display){
-				int16_t y = orig_y;
+				int16_t y = orig_y; //Initialize the values
 				int str_len = 6;
-				char score_str []= {'S', 'c', 'o', 'r', 'e', ':'};
-				char score_cab[] = {0,0};
-				char *score_ca = Int2CharArray(score, score_cab);
-				char time_str [] = {'T','i', 'm', 'e', ':', ' '};
-				char time_cab[] = {0,0,0};
+				char score_str []= {'S', 'c', 'o', 'r', 'e', ':'}; //Print "Score" as the name
+				char score_cab[] = {0,0}; //Initialize it
+				char *score_ca = Int2CharArray(score, score_cab); 
+				char time_str [] = {'T','i', 'm', 'e', ':', ' '}; //Print "Time" as the name
+				char time_cab[] = {0,0,0}; //Initialize it
 				char *time_ca = Int2CharArray(time,time_cab);
-				char life_str [] = {'L', 'i', 'f', 'e', ':', ' '};
-				char life_cab[] = {0};
-				char *life_ca = Int2CharArray(life,life_cab);
+				
 				drawStr(orig_x, y, display, str_len, score_str, score_str);
 				y = y + 8;
 				score_y = y;
@@ -128,70 +117,56 @@ class Board{
 				time_y = y;
 				drawStr(orig_x, time_y, display, 3, time_ca, time_clr);
 				y = y + 8;
-				drawStr(orig_x, y, display, str_len, life_str, life_str);
-				y = y + 8;
-				life_y = y;
-				drawStr(orig_x, life_y, display, 1, life_ca, life_clr);
 		}
 
 	protected:
 		uint8_t score;
-		uint8_t life;
 		uint8_t time;
 		int16_t orig_x;
 		int16_t orig_y;
 		int16_t score_y;
 		int16_t time_y;
-		int16_t life_y;
 		char score_clr[2];
 		char time_clr[3];
-		char life_clr[1];
 };
+// Manage the position of enemies, determine movement and danger status
 class Enemy{
 	public:
 		Enemy(uint8_t startLine, uint8_t startX = 13,  bool startactive = false, bool danger = false) : x(startX), line(startLine), active(startactive) {}
 		void move(Board& board){
 			if(active){
-				if(x==0) {
-					board.score_up();
-					deactivate();
-					x = 13;
-					danger = false;
+				if(x==0) { // x : enemy position
+					board.score_up(); // You need to increase the score on the board by one point // Call the function to increase the score in the class Board using the variable score
+					deactivate(); // Deactivate enemy
+					x = 13; // 13 means outside position of the game display
+					danger = false; // Indicates that the object is "safe" //Indicate that false for danger means it is not dangerous
 				}
 				else {
 					if(x==3){
-						danger = true;
+							danger = true; //Indicates that the object is "Dangerous" //Indicate that ture for danger means there is a threat	
 					}
-					x-=1;
+					x--; // Move the enemy "forward"
 				}
 			}
 		}
 		bool check_active(){
-			// return active state
 			return active;
 		}
 		void activate() {
-			// set active state to true
 			active = true;
-			x = 13;
 		}
 		void deactivate() {
-			// set active state to false
 			active = false;
 		}
 		uint8_t check_x() {
-			// return x
 			return x;
 		}
 		void danger_false(){
-			// set danger to false
 			danger = false;
 		}
 		bool check_danger() {
-			// return danger
 			return danger;
 		}
-		
 	protected:
 	
 		uint8_t x;
@@ -201,7 +176,7 @@ class Enemy{
 };
 
 
-// ------------ don't touch ------------ //
+
 const uint8_t PROGMEM motorcycle_bitmap_left[] = {
 	0x30, 0x78, 0xcc, 0x84, 0x84, 0xcc, 0x48, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
@@ -214,19 +189,16 @@ const uint8_t PROGMEM car_bitmap[] = {
 	0xcc, 0xfe, 0x02, 0xfe, 0x02, 0x02, 0x02, 0x02, 0x02, 0xfe, 0x02, 0x02, 0x02, 0xfe, 0x00, 0x01, 
 	0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01
 };
-// ------------ don't touch ------------ //
 
-bool y_lock = false;
 int x, y;
-uint8_t num;
 uint8_t state;
-uint8_t generate_count = 20;
+uint8_t generate_count = 5; // Enemy cycle, shorter is more difficult
 int delay;
-I2C myI2C(I2C_SDA,I2C_SCL);
-Adafruit_SSD1306_I2c myGUI(myI2C,D13,0x78,64,128);
-AnalogIn x_axis(PC_2);
-AnalogIn y_axis(PC_3);
-InterruptIn button(PB_7);
+I2C myI2C(I2C_SDA, I2C_SCL); // Instance to communicate with OLED
+Adafruit_SSD1306_I2c myGUI(myI2C, D13, 0x78, 64, 128); // Instance to display OLED
+AnalogIn y_axis(PC_3); // Instance to get input of joystick //Left button
+DigitalIn button(PB_7); // Instance to get input of button //Middle button
+InterruptIn button2(PC_4); // Define button 2 as the button with the pause functionality
 Player player = Player(1);
 Enemy enemy0 = Enemy(0);
 Enemy enemy1 = Enemy(1);
@@ -236,175 +208,208 @@ Ticker joystick;
 Ticker counter;
 Timer t;
 
-
-unsigned int score = 80;
-unsigned int timev = 10;
-unsigned int life = 3;
+void initializeDisplay() { // Don't change it
+	myGUI.begin(SSD1306_SWITCHCAPVCC);
+	myGUI.clearDisplay();
+	myGUI.display();
+}
 
 void joystick_Handler(){
-	// ????? ???? ??
-    x = x_axis.read_u16(); // read x axis
-    y = y_axis.read_u16(); // read y axis
-	// handle exception(lock)
-	if (y_lock) return;
-	if (y > 0x8000) {
-		state = 1;
-	} else if (y < 0x2000) {
-		state = 2;
-	} else {
-		state = 0;	// Neutral position
-	}
+	y = y_axis.read() * 1000;
+
+	if (y<600) state = 2; // Which "state" is down? up? neutral? player down //If it is in state2, move upward
+	else if (y>787) state = 1; //If it is in state1, move downward
+	else {}; //Indicate no action is performed
 }
 void time_Handler(){
-	board.time_up();	// Increment time
+	board.time_up(); // You need to increase "time" in "board" //Call the function to increase time from the board
 }
 void create_enemy(){
 	// Activate the enemy in random lane
 	// Enemy moves only when it's active
-	num = rand() % 3; // num: A variable that randomly takes a value between 0 and 2, 
+	uint8_t num = rand() % 3; // num: A variable that randomly takes a value between 0 and 2, 
 	                          //     storing information about the lane where the enemy to activate is located.
 	switch (num) {
 		case 0:
-			// Call the activate function in enemy0 class
-			enemy0.activate();
+			enemy0.activate(); // Call the activate function in enemy0 class
 			break;
 		case 1:
-			// Call the activate function in enemy1 class
-			enemy1.activate();	
+			enemy1.activate(); // Call the activate function in enemy1 class
 			break;
 		case 2:
-			// Call the activate function in enemy2 class
-			enemy2.activate();
+			enemy2.activate(); // Call the activate function in enemy2 class
 			break;
 	}
 }
-
-DigitalOut sound(PB_7);
-Ticker buzzerTicker;
-
-// New method
-void stop_buzzer() {
-	sound = 0;
-}
-
-void play_buzzer() {
-	// Buzzer sound for collisions
-	sound = 1;
-	buzzerTicker.attach(&stop_buzzer, 0.5);
-}
-
-
 // Pause menu phase has to be declared by interrupt with button!
 
-// New method
-void start_game() {
-	//Initialize Game
-	myGUI.clearDisplay();
-	board.initScore(&myGUI);
-	// Set game state to start
-	counter.attach(time_Handler, 1);	
-	t.start();
-	myGUI.display();
-	state = 0;
+int pause = 0; // initial pause value is 0 (pause_func off)
+void pause_func() { 
+	pause = !pause; // reverse the pause value
 }
 
+int life = 3; //Current life
+int max_life = 3; //Maximum life
+
+void drawlife(Adafruit_SSD1306_I2c* diplay, int life, int maxlife) { //Display life on OLED
+	myGUI.setTextCursor(93, 38); //Set the position where the "life" appears
+	myGUI.printf("Life:"); //Display the name "Life"
+	myGUI.setTextCursor(93, 46); //Set the position where the life appears
+	myGUI.printf("%d/%d", life, maxlife); //Display current life and maximum life
+}
 
 int main() {
-	//Start menu phase - ???
-	myGUI.printf("Press button to start");
+	//Initialize OLED
+	initializeDisplay();
+	//Start menu phase
+	myGUI.setTextCursor(11,22); //Define the position to display the game start screen
+	myGUI.printf("If you press the button, game starts~!"); // Try to make Game start screen //Print the game start guide message
 	myGUI.display();
-	
-	button.rise(&start_game);	//Start game on button press
-	
+	while(button.read()==1){
+	} // Wait until button pressed
 
-	//Game phase
+	// Initialize Game
 	// Player movement has to be declared by interrupt with joystick!
-	joystick.attach(joystick_Handler, 0.005);
+	joystick.attach(&joystick_Handler, 0.15); // Setting ticker for joystick input // Set the joystick handler detection time(reduce if the movement is unresponsive)
+	counter.attach(&time_Handler, 1.0); // Setting ticker for timer increase 1 //Increase time by 1 second using the time handler
 	
-	while(1) { // Game loop
-		if(generate_count== 20){
-			create_enemy();
+	myGUI.clearDisplay(); //Drawing outline + initialize score board
+	for(int16_t l=0; l<128; l++){
+		myGUI.drawPixel(l,0,WHITE);
+		myGUI.drawPixel(l,63,WHITE);
+		if(((10<l) && (l<=25)) || ((35<l) && (l<=50)) || ((60<l) && (l<=75))) {
+			myGUI.drawPixel(l, 21, WHITE);
+			myGUI.drawPixel(l, 42, WHITE);
+		}
+	}
+	for(int16_t m=0; m<64; m++){
+		myGUI.drawPixel(85, m, WHITE);
+		myGUI.drawPixel(127, m, WHITE);
+	}
+	board.initScore(&myGUI);
+	drawlife(&myGUI, life, max_life); //Call the function to display life
+	myGUI.display();
+	bool running = true;
+	t.start();
+
+	// Game phase
+	while(running) {
+
+		button2.fall(&pause_func); // if the pause button pushed, pause_func on
+		while (pause == 1) { // pause phase
+			counter.detach(); // time stop
+			myGUI.clearDisplay();
+			myGUI.setTextCursor(0,30); //Set the position where the 'pause message' appears
+			myGUI.printf("PAUSE-press the button to restart"); // PAUSE message on
+			myGUI.display();
+			button2.fall(&pause_func); // if the pause button pushed, pause_func off
+			if (pause == 0) { // pause off phase 
+				myGUI.clearDisplay(); // PAUSE message off
+				for (int16_t l = 0; l < 128; l++) {
+					myGUI.drawPixel(l, 0, WHITE);
+					myGUI.drawPixel(l, 63, WHITE);
+					if (((10 < l) && (l <= 25)) || ((35 < l) && (l <= 50)) || ((60 < l) && (l <= 75))) {
+						myGUI.drawPixel(l, 21, WHITE);
+						myGUI.drawPixel(l, 42, WHITE);
+					}
+				}
+				for (int16_t m = 0; m < 64; m++) {
+					myGUI.drawPixel(85, m, WHITE);
+					myGUI.drawPixel(127, m, WHITE);
+				} //Redraw the background lines
+				board.initScore(&myGUI); //Redisplay the names 'Score' and 'Time'
+				drawlife(&myGUI, life, max_life); //Redisplay the number of life
+				myGUI.display();
+				counter.attach(&time_Handler, 1.0); // time restart
+				break;
+			}
+		}
+
+		t.reset();
+		
+		if(generate_count== 5){ // What is "generate_count" for? // Indicate the 'enemy spawn time"
+			create_enemy(); // Spawn enemies when the count reaches 5
 			generate_count = 0;
 		}
 		
-		y_lock = true;
-		
-		// Erase prev player position
-		myGUI.drawBitmap(0, 5 + player.check_line()*20, car_bitmap, 14, 14, BLACK); // Player
-		// Update player position
-		if (state==1){
-			player.move_down();
-		}else if(state==2){
-			player.move_up();
+
+		myGUI.drawBitmap(0, 5 + player.check_line()*20, car_bitmap, 14, 14, BLACK ); // Player: Clear the previous location 
+		if (state==1){ //Move the joystick downward
+			player.move_down(); //Call the function for moving downward inside the Player class through the player objec
+		}else if(state==2){ //Move the joystick upward
+			player.move_up(); //Call the function for moving upward inside the Player class through the player object
 		}
-		// Draw updated player position
-		myGUI.drawBitmap(0, 5 + player.check_line()*20, car_bitmap, 14, 14, WHITE); // Player
-		y_lock = false;
-		
-		// Draw enemies
-		if (enemy0.check_active()) {
-			if (enemy0.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 7, motorcycle_bitmap_left, 7, 10, WHITE);
-			if (enemy0.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 7, motorcycle_bitmap_right, 7, 10, WHITE);
-			if (enemy0.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7, 7, motorcycle_bitmap_left, 7, 10, BLACK);
-			if (enemy0.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7, 7, motorcycle_bitmap_right, 7, 10, BLACK);
-		}
-		
-		if (enemy1.check_active()) {
-			if (enemy1.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 27, motorcycle_bitmap_left, 7, 10, WHITE);
-			if (enemy1.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 27, motorcycle_bitmap_right, 7, 10, WHITE);
-			if (enemy1.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7, 27, motorcycle_bitmap_left, 7, 10, BLACK);
-			if (enemy1.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7, 27, motorcycle_bitmap_right, 7, 10, BLACK);
-		}
-		
-		if (enemy2.check_active()) {
-			if (enemy2.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 47, motorcycle_bitmap_left, 7, 10, WHITE);
-			if (enemy2.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 47, motorcycle_bitmap_right, 7, 10, WHITE);
-			if (enemy2.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7, 47, motorcycle_bitmap_left, 7, 10, BLACK);
-			if (enemy2.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7, 47, motorcycle_bitmap_right, 7, 10, BLACK);
-		}
-		
+		myGUI.drawBitmap(0, 5 + player.check_line()*20, car_bitmap, 14, 14, WHITE ); // Player: Draw in the current location
+
+		// Enemy: Clear the previous location
+		if (enemy0.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 7, motorcycle_bitmap_left, 7, 10, BLACK ); //BLACK means 'Clear'
+		if (enemy0.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7, 7, motorcycle_bitmap_right, 7, 10, BLACK );
+		if (enemy1.check_x() > 0) myGUI.drawBitmap(enemy1.check_x()*7 - 7, 27, motorcycle_bitmap_left, 7, 10, BLACK );
+		if (enemy1.check_x() < 12) myGUI.drawBitmap(enemy1.check_x()*7, 27, motorcycle_bitmap_right, 7, 10, BLACK );
+		if (enemy2.check_x() > 0) myGUI.drawBitmap(enemy2.check_x()*7 - 7, 47, motorcycle_bitmap_left, 7, 10, BLACK );
+		if (enemy2.check_x() < 12) myGUI.drawBitmap(enemy2.check_x()*7, 47, motorcycle_bitmap_right, 7, 10, BLACK );
+		// Enemy: Movement
 		enemy0.move(board);
 		enemy1.move(board);
 		enemy2.move(board);
-		// Display current phase
-		board.drawScore(&myGUI);
-		// Display player, enemies
-		myGUI.display();
-		
+		// Enemy: Draw in the current location
+		if (enemy0.check_x() > 0 && enemy0.check_x() < 13) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 7, motorcycle_bitmap_left, 7, 10, WHITE ); //WHITE means 'Draw' 
+		if (enemy0.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7, 7, motorcycle_bitmap_right, 7, 10, WHITE );
+		if (enemy1.check_x() > 0 && enemy1.check_x() < 13) myGUI.drawBitmap(enemy1.check_x()*7 - 7, 27, motorcycle_bitmap_left, 7, 10, WHITE );
+		if (enemy1.check_x() < 12) myGUI.drawBitmap(enemy1.check_x()*7, 27, motorcycle_bitmap_right, 7, 10, WHITE );
+		if (enemy2.check_x() > 0 && enemy2.check_x() < 13) myGUI.drawBitmap(enemy2.check_x()*7 - 7, 47, motorcycle_bitmap_left, 7, 10, WHITE );
+		if (enemy2.check_x() < 12) myGUI.drawBitmap(enemy2.check_x()*7, 47, motorcycle_bitmap_right, 7, 10, WHITE );
 		
 		switch(player.check_line()){
 			case 0:
-				// ???? ?? ???? ? ???? check?? life? ??? ??
-				if (enemy0.check_danger()) {
-					board.life_down();
-					enemy0.danger_false();
-					play_buzzer();
+				if(enemy0.check_danger()) {
+					life --; //Decrease life
+					drawlife(&myGUI, life, max_life); //Display the updated life
+					buzzer.period_us(Mi); //Have the frequency of 'Mi' (the frequency of Mi is defined above)
+					buzzer = 0.5; //Emit sound for 0.5 of the total period
+					wait(0.2); //Wait for 0.2 seconds
+					buzzer = 0; //Turn off the sound
+					wait(0.2); //Wait for 0.2 seconds
+					if(life==0){ //When there are no lives remaining
+						running = false; // How can I finish the game phase? //Stop the execution (executed when running is true)
+					} 
+					enemy0.danger_false(); //Reinitialize the danger status
 				}
 				break;
 			case 1:
-				// ???? ?? ???? ? ???? check?? life? ??? ??
-				if (enemy1.check_danger()) {
-					board.life_down();
-					enemy1.danger_false();
-					play_buzzer();
+				if(enemy1.check_danger()) {
+					life --; //Decrease life
+					drawlife(&myGUI, life, max_life); //Display the updated life
+					buzzer.period_us(Mi); //Have the frequency of 'Mi' (the frequency of Mi is defined above)
+					buzzer = 0.5; //Emit sound for 0.5 of the total period
+					wait(0.2); //Wait for 0.2 seconds
+					buzzer = 0; //Turn off the sound
+					wait(0.2); //Wait for 0.2 seconds
+					if(life==0){ //When there are no lives remaining
+						running = false; // How can I finish the game phase? //Stop the execution (executed when running is true)
+					}
+					enemy1.danger_false(); //Reinitialize the danger status
 				}
 				break;
 			case 2:
-				// ???? ?? ???? ? ???? check?? life? ??? ??
-				if (enemy2.check_danger()) {
-					board.life_down();
-					enemy2.danger_false();
-					play_buzzer();
+				if(enemy2.check_danger()) {
+					life --; //Decrease life
+					drawlife(&myGUI, life, max_life);//Display the updated life
+					buzzer.period_us(Mi); //Have the frequency of 'Mi' (the frequency of Mi is defined above)
+					buzzer = 0.5; //Emit sound for 0.5 of the total period
+					wait(0.2); //Wait for 0.2 seconds
+					buzzer = 0; //Turn off the sound
+					wait(0.2); //Wait for 0.2 seconds
+					if(life==0){ //When there are no lives remaining
+						running = false; // How can I finish the game phase? //Stop the execution (executed when running is true)
+					}
+					enemy2.danger_false(); //Reinitialize the danger status
 				}
 				break;
 		}
-		// life? check?? 0??? ???? game over
-		if (board.check_life() == 0) {
-			break;
-		}
 		// Display Scoreboard
 		generate_count ++;
-		delay = 16 - t.read_ms();
+		delay = 16 - t.read_ms(); 
 		if (delay > 0) wait_ms(delay);
 		board.drawScore(&myGUI);
 		myGUI.display();
@@ -412,8 +417,11 @@ int main() {
 
 	//Game Over phase
 	myGUI.clearDisplay();
-	myGUI.printf("\nGame Over!\n");
-	myGUI.printf("Your Score: %u\n", board.check_score());
-	myGUI.printf("You survived for\n%u seconds!", board.check_time());
+	myGUI.setTextCursor(0,5); //Set the position where the 'game over message' appears when the game ends
+	myGUI.printf("Game over.."); // You need to display game over screen //Print "Game over..." on the OLED
+	myGUI.setTextCursor(0,26); // Game over screen should include {score} //Set the position where the score appears when the game ends
+	myGUI.printf("Score : %d", board.check_score()); //Return and display the final score
+	myGUI.setTextCursor(0,47); // Game over screen should include {time} //Set the position where the time appears when the game ends
+	myGUI.printf("Time : %d", board.check_time()); //Return and display the final score
 	myGUI.display();
 }
