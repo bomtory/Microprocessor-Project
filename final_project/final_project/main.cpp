@@ -342,12 +342,18 @@ int main() {
 		y_lock = false;
 		
 		// Draw enemies
-		if (enemy0.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 7, motorcycle_bitmap_left, 7, 10, BLACK);
+		if (enemy0.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 7, motorcycle_bitmap_left, 7, 10, WHITE);
+		if (enemy0.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 7, motorcycle_bitmap_right, 7, 10, WHITE);
+		if (enemy0.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7, 7, motorcycle_bitmap_left, 7, 10, BLACK);
 		if (enemy0.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7, 7, motorcycle_bitmap_right, 7, 10, BLACK);
-		if (enemy1.check_x() > 0) myGUI.drawBitmap(enemy1.check_x()*7 - 7, 27, motorcycle_bitmap_left, 7, 10, BLACK);
-		if (enemy1.check_x() < 12) myGUI.drawBitmap(enemy1.check_x()*7, 27, motorcycle_bitmap_right, 7, 10, BLACK);
-		if (enemy2.check_x() > 0) myGUI.drawBitmap(enemy2.check_x()*7 - 7, 47, motorcycle_bitmap_left, 7, 10, BLACK);
-		if (enemy2.check_x() < 12) myGUI.drawBitmap(enemy2.check_x()*7, 47, motorcycle_bitmap_right, 7, 10, BLACK);
+		if (enemy1.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 27, motorcycle_bitmap_left, 7, 10, WHITE);
+		if (enemy1.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 27, motorcycle_bitmap_right, 7, 10, WHITE);
+		if (enemy1.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7, 27, motorcycle_bitmap_left, 7, 10, BLACK);
+		if (enemy1.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7, 27, motorcycle_bitmap_right, 7, 10, BLACK);
+		if (enemy2.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 47, motorcycle_bitmap_left, 7, 10, WHITE);
+		if (enemy2.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7 - 7, 47, motorcycle_bitmap_right, 7, 10, WHITE);
+		if (enemy2.check_x() > 0) myGUI.drawBitmap(enemy0.check_x()*7, 47, motorcycle_bitmap_left, 7, 10, BLACK);
+		if (enemy2.check_x() < 12) myGUI.drawBitmap(enemy0.check_x()*7, 47, motorcycle_bitmap_right, 7, 10, BLACK);
 		enemy0.move(board);
 		enemy1.move(board);
 		enemy2.move(board);
