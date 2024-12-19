@@ -281,14 +281,20 @@ void create_enemy(){
 	}
 }
 
+DigitalOut buzzer(PA_14);
+Ticker buzzerTicker;
+
 // New method
-void play_buzzer() {
-	// Buzzer sound for collisions
-	DigitalOut buzzer(PA_14);
-	buzzer = 1;
-	wait_us(500000);	// beep 0.5s
+void stop_buzzer() {
 	buzzer = 0;
 }
+
+void play_buzzer() {
+	// Buzzer sound for collisions
+	buzzer = 1;
+	buzzerTicker.attach(&stop_buzzer, 0.5);
+}
+
 
 // Pause menu phase has to be declared by interrupt with button!
 
